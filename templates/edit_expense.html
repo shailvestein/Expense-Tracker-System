@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <title>Edit Expense</title>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0">
+
+        
+        <!-- Flash Messages -->
+        <div class="container mt-3">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} text-center shadow-sm rounded" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
+
+
+        <div class="card-header bg-primary text-white text-center rounded-top">
+          <h3 class="mb-0">Edit Expense</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="">
+
+            <div class="mb-3">
+              <label for="item" class="form-label">Item</label>
+              <input type="text" name="item" class="form-control" value="{{ expense.item }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" name="price" class="form-control" value="{{ expense.price }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="purchasing_date" class="form-label">Purchased on</label>
+              <input type="date" name="purchasing_date" class="form-control" value="{{ expense.purchasing_date }}">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">🧍 Purchased By:</label><br>
+              <div class="form-check form-check-inline">
+                <input type="radio" name="purchased_by" value="Brijesh" id="brijesh" class="form-check-input">
+                <label class="form-check-label" for="brijesh">Brijesh</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="radio" name="purchased_by" value="Santosh" id="santosh" class="form-check-input">
+                <label class="form-check-label" for="santosh">Santosh</label>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+              <button type="submit" class="btn btn-success">✅ Update</button>
+              <a href="{{ url_for('view_expense')}}" class="btn btn-outline-secondary">↩ Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS and Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}" />
+
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <!-- Floating money animation -->
+  <div class="floating-money">
+    <!-- Use your downloaded image paths here -->
+    <!-- <img src="/static/img/500rs.png" class="money" style="top:10%; left:5%; --i:1;"> -->
+    <img src="/static/img/100dollar_1.png" class="money" style="top:30%; left:15%; --i:2;">
+    <!-- <img src="/static/img/500rs.png" class="money" style="top:50%; left:25%; --i:3;"> -->
+    <img src="/static/img/100dollar_2.png" class="money" style="top:70%; left:50%; --i:4;">
+    <!-- <img src="/static/img/500rs.png" class="money" style="top:40%; left:75%; --i:5;"> -->
+    <img src="/static/img/100dollar_3.png" class="money" style="top:20%; left:85%; --i:6;">
+  </div>
+
+
+
+  <!-- Page Content -->
+  <main class="container mb-5">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{url_for('static', filename='js/script.js')}}"></script>
+
+</body>
+</html>
