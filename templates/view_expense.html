@@ -4,33 +4,7 @@
 {% block head %}
   <title>View Expenses</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
-  <style>
-    .custom-table thead {
-      background-color: #343a40;
-      color: #fff;
-    }
-    .custom-table tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    .page-heading {
-      font-size: 16px; /* Default font size for larger screens */
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 20px;
-      text-align: center;
-    }
 
-    /* Responsive font size */
-    @media (max-width: 768px) {
-      .page-heading {
-        font-size: 10px; /* Font size for smaller screens */
-      }
-    }
-
-    .back-btn {
-      width: 200px;
-    }
-  </style>
 {% endblock %}
 
 {% block content %}
@@ -67,9 +41,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('calculations_history') }}">Calculation History</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('send_report') }}">Send Hisab-Report</a>
           </li>
         </ul>
         <ul class="navbar-nav">
