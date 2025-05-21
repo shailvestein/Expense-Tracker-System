@@ -222,7 +222,7 @@ def view_expense():
   # recent_calculation_history = Calculation.query.order_by(Calculation.id.desc()).first()
   recent_calculation_history = supabase.table('calculations').select('*').order('id', desc=True).limit(1).execute().data
   if not recent_calculation_history:
-    expenses = supabase.table('expenses').select('*').order('entry_date', desc=True).execute().data
+    expenses = supabase.table('expenses').select('*').execute().data
   else:
     recent_calculation_history = recent_calculation_history[0]
     previous_hisab_date = recent_calculation_history['to_date']
@@ -474,7 +474,7 @@ def calculations():
 @app.route('/calculations_history')
 def calculations_history():
   
-  calculations_history = supabase.table('calculations').select('*').order('hisab_date', desc=True).execute().data
+  calculations_history = supabase.table('calculations').select('*').order('id', desc=True).execute().data
   return render_template('calculations_history.html', calculations_history=calculations_history)
 @app.route('/final_payment_done/<int:history_id>', methods=['POST'])
 def final_payment_done(history_id):
@@ -551,4 +551,4 @@ def send_report():
   return redirect(url_for('admin_dashboard'))
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run()
