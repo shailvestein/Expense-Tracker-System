@@ -3,24 +3,9 @@
 {% block head %}
   <title>Manage Users</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/view_users.css') }}">
   <style>
-    .custom-table thead {
-      background-color: #343a40;
-      color: #fff;
-    }
-    .custom-table tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    .page-heading {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .back-btn {
-      width: 200px;
-    }
+
   </style>
 {% endblock %}
 
@@ -35,7 +20,7 @@
       </h5>
     </span>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
