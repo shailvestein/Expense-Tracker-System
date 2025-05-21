@@ -221,9 +221,8 @@ def view_expense():
   
   # recent_calculation_history = Calculation.query.order_by(Calculation.id.desc()).first()
   recent_calculation_history = supabase.table('calculations').select('*').order('id', desc=True).limit(1).execute().data
-  print(f'recent calculation history is: {recent_calculation_history}')
   if not recent_calculation_history:
-    expenses = supabase.table('expenses').select('*').execute().data
+    expenses = supabase.table('expenses').select('*').order('entry_date', desc=True).execute().data
   else:
     recent_calculation_history = recent_calculation_history[0]
     previous_hisab_date = recent_calculation_history['to_date']
@@ -232,14 +231,8 @@ def view_expense():
     if isinstance(previous_hisab_date, datetime):
         previous_hisab_date = previous_hisab_date.isoformat()
 
-    print(f'previous hisab date is: {previous_hisab_date}')
-
     # Now fetch newer expenses
-    expenses = supabase.table('expenses').select('*').gt('entry_date', previous_hisab_date).order('entry_date').execute().data
-
-    print(f'expenses are: {expenses}')
-
-    print(f'previous hisab date is: {previous_hisab_date}')
+    expenses = supabase.table('expenses').select('*').gt('entry_date', previous_hisab_date).order('entry_date', desc=True).execute().data
 
   if request.method == 'POST':
     if len(expenses) == 0:
@@ -250,7 +243,6 @@ def view_expense():
       records = []
       for e in expenses:
         row_data = []
-        print(e['entry_date'])
         for column in column_names:
           col_value = e[column]
           row_data.append(col_value)
@@ -482,7 +474,7 @@ def calculations():
 @app.route('/calculations_history')
 def calculations_history():
   
-  calculations_history = supabase.table('calculations').select('*').execute().data
+  calculations_history = supabase.table('calculations').select('*').order('hisab_date', desc=True).execute().data
   return render_template('calculations_history.html', calculations_history=calculations_history)
 @app.route('/final_payment_done/<int:history_id>', methods=['POST'])
 def final_payment_done(history_id):
@@ -515,7 +507,6 @@ def final_payment_done(history_id):
           flash('Update failed, please try again.', 'danger')
 
     except Exception as e:
-        print("Exception:", e)
         flash("Error occurred please try again later", 'danger')
 
     return redirect(url_for('calculations_history'))
