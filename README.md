@@ -16,12 +16,14 @@ A simple and efficient Expense Tracker web application built using Python and Fl
 
 ## Tech Stack
 
-- **Backend:** Python, Flask
-- **Frontend:** HTML, CSS, Bootstrap
-- **Database:** SQLite (or any other supported by SQLAlchemy)
-- **Others:** Flask-WTF for forms, Flask-Login (if implemented for user authentication)
-
 ---
+## 🧰 Tech Stack
+
+- **Frontend:** HTML5, CSS3, Bootstrap 5
+- **Backend:** Python, Flask
+- **Database:** Supabase (PostgreSQL)
+- **Deployment:** Render
+
 
 ## Project Structure
 
