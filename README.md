@@ -33,19 +33,30 @@
 
 ```
 Expense-Tracker-System/
-├── app.py # Main Flask app and route handlers
-├── supabase_client.py # Supabase database client setup
-├── send_mail.py # Optional email helper
-├── requirements.txt # Python dependencies
-├── static/ # Static files: CSS, JS, images
-├── templates/ # Jinja2 HTML templates
-│ ├── home.html
+├── app.py # Main Flask application
+├── supabase_client.py # Supabase client connection
+├── send_mail.py # Email sending logic
+├── requirements.txt # List of Python dependencies
+├── Procfile # For deployment on Render/Heroku
+├── templates/ # HTML templates
+│ ├── add_expense.html
+│ ├── admin_dashboard.html
+│ ├── base.html
+│ ├── calculations.html
+│ ├── calculations_history.html
+│ ├── edit_expense.html
+│ ├── edit_user.html
+│ ├── email_parser.html
 │ ├── login.html
-│ ├── admin.html
-│ ├── add.html
-│ ├── edit.html
-│ └── view.html
-├── Procfile # For deployment (e.g. Heroku or Render)
+│ ├── register.html
+│ ├── user_dashboard.html
+│ ├── view_expense.html
+│ └── view_users.html
+├── static/
+│ ├── css/ # Stylesheets
+│ ├── fonts/ # Fonts used
+│ ├── img/ # Images
+│ └── js/ # JavaScript files
 └── README.md # Project documentation
 ```
 
