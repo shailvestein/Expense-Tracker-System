@@ -1,29 +1,31 @@
 # Expense Tracker System
 
-A simple, role-based expense tracker built with **Flask**, **Bootstrap**, and **PostgreSQL** (via Supabase), complete with admin login and CRUD functionality for managing expenses.
+A simple and efficient Expense Tracker web application built using Python and Flask. This system allows users to track their daily expenses, categorize them, and view summaries for better financial management.
 
 ---
 
-## 🚀 Features
+## Features
 
-- **Admin Authentication**: Secure login system using hashed passwords (via `werkzeug.security`).
-- **Manage Expenses**: Add, view, edit, and delete expenses.
-- **Contact & About Sections**: Admin-controlled content for about/contact info.
-- **Skills, Education, Experience**: Dynamically update personal profile sections.
-- **Live Data**: All content is stored in Supabase and rendered dynamically.
-- **Responsive UI**: Mobile-first design powered by Bootstrap.
+- Add, edit, and delete expenses
+- Categorize expenses (e.g., Food, Transport, Utilities)
+- View expense history with filters by date and category
+- Dashboard summary with total expenses
+- User-friendly and clean interface
+
+---
+
+## Tech Stack
+
+- **Backend:** Python, Flask
+- **Frontend:** HTML, CSS, Bootstrap
+- **Database:** SQLite (or any other supported by SQLAlchemy)
+- **Others:** Flask-WTF for forms, Flask-Login (if implemented for user authentication)
 
 ---
 
-## 🧰 Tech Stack
+## Project Structure
 
-- **Backend**: Python 3, Flask  
-- **Frontend**: HTML5, CSS3, Bootstrap  
-- **Database**: Supabase (PostgreSQL)  
-- **Email**: Utility for sending emails (`send_mail.py`, optional)  
-- **Deployment**: Compatible with Render, Heroku, or any Flask-capable service
 
----
 
 ## 📁 Project Structure
 
@@ -47,70 +49,59 @@ Expense-Tracker-System/
 
 ---
 
-## ⚙️ Installation & Setup
+
+---
+
+## Installation
 
 1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/shailvestein/Expense-Tracker-System.git
-    cd Expense-Tracker-System
-    ```
 
-2. **Setup environment:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # Windows: venv\Scripts\activate
-    pip install -r requirements.txt
-    cp .env.template .env      # Create your secrets file
-    # Add SUPABASE_URL, SUPABASE_KEY, SECRET_KEY, etc.
-    ```
+git clone https://github.com/shailvestein/Expense-Tracker-System.git
+cd Expense-Tracker-System
 
-3. **Run the application:**
-    ```bash
-    python app.py
-    ```
-    Access via `http://localhost:5000`.
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
 
----
+pip install -r requirements.txt
 
-## 📝 Usage
+python app.py
 
-- Visit `/login` to access admin dashboard.
-- Use dashboard to **Add**, **Edit**, and **Delete** entries in:
-  - Skills
-  - Projects
-  - Education
-  - Experience
-  - About
-  - Contact
-  - Expenses
-- View dynamic content on the home page.
+http://127.0.0.1:5000/
 
----
+Usage
+Use the dashboard to view all your expenses.
 
-## 💬 Contributing
+Add new expenses by clicking the "Add Expense" button.
 
-Contributions welcome! Suggested workflow:
-1. Fork the repo  
-2. Create a feature branch (`git checkout -b feature-name`)  
-3. Commit your changes  
-4. Open a pull request
+Edit or delete any existing expense.
 
----
+Filter expenses by date or category to analyze spending habits.
 
-## 📄 License
+Contributing
+Contributions are welcome! Please follow these steps:
 
-Open-sourced under the **MIT License** — check the LICENSE file for details.
+Fork the repository.
 
----
+Create a new branch: git checkout -b feature/your-feature-name
 
-## 🙏 Acknowledgments
+Make your changes and commit: git commit -m 'Add some feature'
 
-Built using:
-- Flask community  
-- Bootstrap  
-- Supabase  
+Push to your branch: git push origin feature/your-feature-name
 
----
+Open a Pull Request.
 
-Enjoy managing your expenses effortlessly! 😊  
-— *Shailesh Kumar Vishwakarma*
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+Contact
+For any questions or feedback, reach out to:
+
+Author: Shailesh Kumar Vishwakarma
+
+Email: shailvestein.careers@gmail.com
+
+GitHub: shailvestein
+
