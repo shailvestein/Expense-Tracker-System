@@ -58,7 +58,6 @@ Expense-Tracker-System/
 1. Use the dashboard to view all your expenses.
 2. Add new expenses by clicking the "Add Expense" button.
 3. Edit or delete any existing expense.
-4. Filter expenses by date or category to analyze spending habits.
 
 
 ## Contact
