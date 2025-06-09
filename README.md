@@ -52,56 +52,16 @@ Expense-Tracker-System/
 
 ---
 
-## Installation
+## Usage
+1. Use the dashboard to view all your expenses.
+2. Add new expenses by clicking the "Add Expense" button.
+3. Edit or delete any existing expense.
+4. Filter expenses by date or category to analyze spending habits.
 
-1. **Clone the repository:**
 
-git clone https://github.com/shailvestein/Expense-Tracker-System.git
-cd Expense-Tracker-System
-
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Linux/Mac
-source venv/bin/activate
-
-pip install -r requirements.txt
-
-python app.py
-
-http://127.0.0.1:5000/
-
-Usage
-Use the dashboard to view all your expenses.
-
-Add new expenses by clicking the "Add Expense" button.
-
-Edit or delete any existing expense.
-
-Filter expenses by date or category to analyze spending habits.
-
-Contributing
-Contributions are welcome! Please follow these steps:
-
-Fork the repository.
-
-Create a new branch: git checkout -b feature/your-feature-name
-
-Make your changes and commit: git commit -m 'Add some feature'
-
-Push to your branch: git push origin feature/your-feature-name
-
-Open a Pull Request.
-
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-Contact
+## Contact
 For any questions or feedback, reach out to:
-
-Author: Shailesh Kumar Vishwakarma
-
-Email: shailvestein.careers@gmail.com
-
-GitHub: shailvestein
+  * Author: Shailesh Kumar Vishwakarma
+  * Email: shailvestein.careers@gmail.com
+  * GitHub: shailvestein
 
