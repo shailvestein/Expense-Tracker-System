@@ -1,7 +1,7 @@
-# Expense Tracker System
+## Expense Tracker System
 
-A simple and efficient Expense Tracker web application built using Python and Flask. This system allows users to track their daily expenses, categorize them, and view summaries for better financial management.
-Designed and implemented a secure admin dashboard enabling real-time content updates.
+#### A simple and efficient Expense Tracker web application built using Python and Flask. This system allows users to track their daily expenses, categorize them, and view summaries for better financial management.
+#### Designed and implemented a secure admin dashboard enabling real-time content updates.
 ---
 
 ## Features
