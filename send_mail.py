@@ -52,7 +52,3 @@ class LoadEmailIds:
 
   def get_all_recipients(self):
     return self.recipients
-
-
-# print(LoadEmailIds().get_all_recipients())
-

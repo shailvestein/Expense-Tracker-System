@@ -161,13 +161,14 @@ def add_expense():
   if response.data:
     user = response.data[0] 
   if request.method == 'POST':
+    print(f"Adding expense by {user['phone']} {datetime.now().time()}")
     item = request.form['item']
     price = request.form['price']
-    purchasing_date = request.form['purchasing_date']
+    purchasing_date = request.form['purchasing_date'] + " " + str(datetime.now().time())
     purchased_by = request.form['purchased_by']
     entry_date = datetime.now().isoformat()
     entry_added_by = user['phone']
-    purchasing_date = datetime.strptime(purchasing_date, '%Y-%m-%d')
+    purchasing_date = datetime.strptime(purchasing_date, '%Y-%m-%d %H:%M:%S.%f')
     try:
       if purchasing_date > datetime.now():
         flash('Purchase date cannot be in future', 'danger')
@@ -181,11 +182,9 @@ def add_expense():
       response = supabase.table('expenses').insert(new_exp).execute()
       if response.data:
       
-        # #########################################
-        # Sending   all   expenses  email        #  
-        # once     a new    expense      added   #
-        # #########################################
-
+        # Sending   all   expenses  email 
+        # once     a new    expense      added
+        # Loading email ids from database #
         prev_hisab_date = supabase.table('calculations').select('*').order('id', desc=True).execute().data[0]['to_date'] 
         expenses = supabase.table('expenses').select('*').gt('entry_date', prev_hisab_date).execute().data
         records = []
@@ -218,62 +217,75 @@ def add_expense():
 
 @app.route('/view_expense', methods=['GET', 'POST'])
 def view_expense():
-  
-  # recent_calculation_history = Calculation.query.order_by(Calculation.id.desc()).first()
-  recent_calculation_history = supabase.table('calculations').select('*').order('id', desc=True).limit(1).execute().data
-  if not recent_calculation_history:
-    expenses = supabase.table('expenses').select('*').execute().data
-  else:
-    recent_calculation_history = recent_calculation_history[0]
-    previous_hisab_date = recent_calculation_history['to_date']
+    # Recent calculation history
+    recent_calculation_history = supabase.table('calculations').select('*').order('id', desc=True).limit(1).execute().data
+    if not recent_calculation_history:
+        expenses = supabase.table('expenses').select('*').execute().data
+    else:
+        previous_hisab_date = recent_calculation_history[0]['to_date']
+        if isinstance(previous_hisab_date, datetime):
+            previous_hisab_date = previous_hisab_date.isoformat()
+        expenses = supabase.table('expenses').select('*').gt('purchasing_date', previous_hisab_date).order('entry_date', desc=True).execute().data
 
-    # Make sure it's in ISO format string
-    if isinstance(previous_hisab_date, datetime):
-        previous_hisab_date = previous_hisab_date.isoformat()
+    # 🧾 Get all unique 'purchased_by' values
+    all_names = sorted({'Brijesh', 'Santosh'})
 
-    # Now fetch newer expenses
-    expenses = supabase.table('expenses').select('*').gt('entry_date', previous_hisab_date).order('entry_date', desc=True).execute().data
+    # 🎯 Filter logic (GET)
+    selected_users = request.args.getlist('purchased_by')
+    if selected_users:
+        filtered_expenses = [exp for exp in expenses if exp['purchased_by'] in selected_users]
+    else:
+        filtered_expenses = expenses
 
-  if request.method == 'POST':
-    if len(expenses) == 0:
-      flash("No new expenses found after hisab-done! Please add new ones.", 'danger')
-      return redirect(url_for('view_expense'))
-    try:
-      column_names = [column for column in expenses[0].keys()]
-      records = []
-      for e in expenses:
-        row_data = []
-        for column in column_names:
-          col_value = e[column]
-          row_data.append(col_value)
-        records.append(row_data)
+    # 📤 Email send logic (POST)
+    if request.method == 'POST':
+        if len(filtered_expenses) == 0:
+            flash("No new expenses found after hisab-done! Please add new ones.", 'danger')
+            return redirect(url_for('view_expense'))
+        try:
+            column_names = [column for column in filtered_expenses[0].keys()][1:]
+            records = []
+            for e in filtered_expenses:
+                row_data = []
+                for column in column_names:
+                    col_value = e[column]
+                    row_data.append(col_value)
+                records.append(row_data)
+            column_names.insert(0, '#')  # Add index column
+            for i, record in enumerate(records):
+                record.insert(0, i + 1)
 
 
-      ##########################################
-      # Sending email report of all expense    #
-      ##########################################
+            # Emailing logic
+            response = supabase.table('users').select('*').eq('phone', session['username']).execute()
+            if response.data:
+                recipients = [response.data[0]['email']]
 
-      # Loading email ids from database #
-      response = supabase.table('users').select('*').eq('phone', session['username']).execute()
-      if response.data:
-        recipients = [response.data[0]['email']]
-      # recipients  = [User.query.filter_by(phone=session['username']).first().email]
-      subject = f"All expenses record shared by {session['username']}"
-      contents = dict()
-      contents['table_title'] = 'सभी खर्चे'
-      contents['table_headings'] = column_names
-      contents['table_contents'] = records
-      send_mail.send_email_with_rendered_html(subject=subject,
-                                              recipients=recipients,
-                                              contents=contents,
-                                              html_filepath='email_parser.html')
-      flash(f"Expenses sent successfully on {recipients[0]}", 'success')
-    except Exception as e:
-      flash(f"Some error {e} occurred!", 'danger')
-    return redirect(url_for('view_expense'))
+            subject = f"All expenses record shared by {session['username']}"
+            contents = {
+                'table_title': 'सभी खर्चे',
+                'table_headings': column_names,
+                'table_contents': records
+            }
 
-  return render_template('view_expense.html', expenses=expenses, role=session['role'])
-  
+            send_mail.send_email_with_rendered_html(subject=subject,
+                                                    recipients=recipients,
+                                                    contents=contents,
+                                                    html_filepath='email_parser.html')
+            flash(f"Expenses sent successfully on {recipients[0]}", 'success')
+
+        except Exception as e:
+            flash(f"Some error {e} occurred!", 'danger')
+
+        return redirect(url_for('view_expense'))
+
+    return render_template('view_expense.html',
+                           expenses=filtered_expenses,
+                           role=session['role'],
+                           all_names=all_names,
+                           selected_users=selected_users)
+
+
 
 @app.route('/edit_expense/<int:expense_id>', methods=['GET','POST'])
 def edit_expense(expense_id):
@@ -305,10 +317,8 @@ def edit_expense(expense_id):
       expense['purchased_by'] = new_purchased_by
       expense['purchasing_date'] = new_purchasing_date
       expense['entry_updated_by'] = session['username']
-      ##########################################
-      # Sending email once a expense edited    #
-      ##########################################
 
+      # Sending email once a expense edited
       # Loading email ids from database #
       recipients  = LoadEmailIds().get_all_recipients()
       subject = f"Expense record edited successfully by {session['username']}"
@@ -336,10 +346,8 @@ def edit_expense(expense_id):
 def delete_expense(expense_id):
   
   expense = supabase.table('expenses').select('*').eq('id', expense_id).execute().data[0]
-  ##########################################
-  # Sending email once a expense deleted    #
-  ##########################################
 
+  # Sending email once a expense deleted    #
   # Loading email ids from database #
   recipients  = LoadEmailIds().get_all_recipients()
   subject = f"Expense record Deleted successfully by {session['username']}"
@@ -400,7 +408,7 @@ def calculations():
         expense = supabase.table('expenses').select('*').execute().data
     else:
         till_prev_hisab_date = recent_calculation_history['to_date']
-        expense = supabase.table('expenses').select('*').gt('entry_date', till_prev_hisab_date).execute().data
+        expense = supabase.table('expenses').select('*').gt('purchasing_date', till_prev_hisab_date).execute().data
 
 
 
@@ -413,11 +421,17 @@ def calculations():
             flash('No expenses found! Please add some.', 'warning')
             return redirect(url_for('calculations'))
         # Safely fetch from_date (oldest) and to_date (latest)
-        from_date_result = supabase.table('expenses').select('entry_date').order('entry_date', desc=False).limit(1).execute().data
-        to_date_result = supabase.table('expenses').select('entry_date').order('entry_date', desc=True).limit(1).execute().data
-
-        from_date = from_date_result[0]['entry_date'] if from_date_result else None
-        to_date = to_date_result[0]['entry_date'] if to_date_result else None
+        # Reload latest calculation history for display
+        calc_result = supabase.table('calculations').select('*').order('id', desc=True).limit(1).execute().data
+        if not calc_result:
+          # If no previous calculation, fetch from the expenses table
+          from_date_result = supabase.table('expenses').select('purchasing_date').order('purchasing_date', desc=False).limit(1).execute().data
+          from_date = from_date_result[0]['purchasing_date']
+        else:
+          from_date= calc_result[0]['to_date']
+        
+        to_date_result = supabase.table('expenses').select('purchasing_date').order('purchasing_date', desc=True).limit(1).execute().data
+        to_date = to_date_result[0]['purchasing_date'] if to_date_result else None
 
         current_hisab_date = datetime.now().isoformat()
 
@@ -437,10 +451,8 @@ def calculations():
         response = supabase.table('calculations').insert(save_history).execute()
         if response.data:
           is_saved = True
-          ##########################################
-          # Sending email once a expense deleted    #
-          ##########################################
 
+          # Sending email once a expense deleted
           # Loading email ids from database #
           recipients  = LoadEmailIds().get_all_recipients()
           subject = f"Hisab record saved successfully by {session['username']}"
@@ -473,9 +485,9 @@ def calculations():
 
 @app.route('/calculations_history')
 def calculations_history():
-  
   calculations_history = supabase.table('calculations').select('*').order('id', desc=True).execute().data
   return render_template('calculations_history.html', calculations_history=calculations_history)
+
 @app.route('/final_payment_done/<int:history_id>', methods=['POST'])
 def final_payment_done(history_id):
     try:
@@ -490,7 +502,8 @@ def final_payment_done(history_id):
         update_response = supabase.table('calculations').update(history).eq('id', history_id).execute()
 
         if update_response.data:
-          # Load Email Ids #
+          # Sending email once a hisab record updated
+          # Loading email ids from database #
           recipients  = LoadEmailIds().get_all_recipients()
           subject = f"Payment recieved, Hisab record updated successfully by {session['username']}"
           contents = dict()
@@ -529,10 +542,8 @@ def send_report():
         row_data.append(col_value)
       records.append(row_data)
 
-    ##########################################
-    # Sending email report of hisab-kitab    #
-    ##########################################
 
+    # Sending email report of hisab-kitab    #
     # Loading email ids from database #
     recipients  = LoadEmailIds().get_all_recipients()
     subject = f"हिसाब-किताब Report shared by {session['username']}"
@@ -550,5 +561,45 @@ def send_report():
     flash(f"Some error {e} occurred!", 'danger')
   return redirect(url_for('admin_dashboard'))
 
+@app.route('/view_expenses_history/<history_id>', methods=['GET', 'POST'])
+def view_expenses_history(history_id):
+    # Fetch the calculation range
+    calculations_history_record = supabase.table('calculations') \
+        .select('*') \
+        .eq('id', history_id) \
+        .execute().data[0]
+
+    from_date = calculations_history_record['from_date']
+    to_date = calculations_history_record['to_date']
+
+    # Fetch all expenses within the date range
+    all_expenses = supabase.table('expenses') \
+        .select('*') \
+        .gt('purchasing_date', from_date) \
+        .lte('purchasing_date', to_date) \
+        .execute().data
+
+    # Collect all unique names from the expenses
+    dynamic_names = set(e['purchased_by'] for e in all_expenses)
+
+    # Ensure 'Brijesh' and 'Santosh' are always included
+    required_names = {'Brijesh', 'Santosh'}
+    all_names = sorted(dynamic_names.union(required_names))  # merged and sorted
+
+    # Get checkbox values from URL query
+    selected_users = request.args.getlist('purchased_by')
+
+    # Apply filter if selected_users is non-empty
+    if selected_users:
+        filtered_expenses = [e for e in all_expenses if e['purchased_by'] in selected_users]
+    else:
+        filtered_expenses = all_expenses  # No filter, show all
+
+    return render_template('view_expenses_history.html',
+                           expenses=filtered_expenses,
+                           all_names=all_names,
+                           selected_users=selected_users)
+
+
 if __name__ == '__main__':
-  app.run()
+  app.run(debug=True)
