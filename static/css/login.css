@@ -1,0 +1,41 @@
+body {
+  background: linear-gradient(to right, #ff01f7, #00efd7);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card {
+  /* background: linear-gradient(to left, rgb(255, 251, 127), rgb(165, 255, 124)); */
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0 30px rgba(0,0,0,0.1);
+}
+
+.form-control {
+  border-radius: 0.5rem;
+}
+
+.form-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-group input {
+  padding-left: 40px;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #fff;
+  border-color: transparent;
+  font-weight: bold;
+}
