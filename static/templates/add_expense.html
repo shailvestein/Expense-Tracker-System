@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Expense{% endblock %}
+
+{% block content %}
+{% if user['role'] == 'admin' %}
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg shadow-sm rounded">
+    <div class="container-fluid">
+      <span class="navbar-brand d-flex align-items-center">
+        <h5 class="mb-0 me-2">
+          <a class="nav-link" href="{{ url_for('admin_dashboard') }}">⚙️ Admin Panel</a>
+        </h5>
+      </span>
+
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('register') }}">Register New User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('view_users') }}">View All Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('add_expense') }}">Add New Expense</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('view_expense') }}">View Expenses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('calculations') }}">Make Calculation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('calculations_history') }}">Calculation History</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="btn btn-danger btn-sm" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endif %}
+
+<div class="container py-5">
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="row mb-4">
+        {% for category, message in messages %}
+          <div class="col-12">
+            <div class="alert alert-{{ category }} text-center shadow-sm">
+              {{ message }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Form Card -->
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center rounded-top">
+          <h3 class="mb-0">➕ Add New Expense</h3>
+        </div>
+        <div class="card-body p-4">
+
+          <form action="{{ url_for('add_expense') }}" method="POST">
+
+            <!-- Item -->
+            <div class="mb-3">
+              <label for="item" class="form-label">🛒 Item Purchased</label>
+              <input type="text" class="form-control" id="item" name="item" placeholder="Enter item name" required>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+              <label for="price" class="form-label">💰 Price</label>
+              <input type="number" class="form-control" id="price" name="price" placeholder="Enter amount" required>
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+              <label for="purchasing_date" class="form-label">📅 Purchased On</label>
+              <input type="date" class="form-control" id="purchasing_date" name="purchasing_date" max="{{ current_date }}" required>
+            </div>
+
+            <!-- Purchased By -->
+            <div class="mb-4">
+              <label class="form-label">🧍 Purchased By:</label>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="brijesh" name="purchased_by" value="Brijesh" checked>
+                <label class="form-check-label" for="brijesh">Brijesh</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="santosh" name="purchased_by" value="Santosh">
+                <label class="form-check-label" for="santosh">Santosh</label>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success btn-sm">💾 Save Expense</button>
+              {% if user['role'] == "admin" %}
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary btn-sm">← Back to Dashboard</a>
+              {% else %}
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-outline-primary btn-sm">← Back to Dashboard</a>
+              {% endif %}
+              <a href="{{ url_for('view_expense') }}" class="btn btn-outline-primary back-btn">
+                View Expense
+              </a>
+              
+            </div>
+            
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
