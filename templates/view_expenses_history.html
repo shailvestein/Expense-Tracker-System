@@ -119,7 +119,7 @@
                 <tr class="text-center align-middle">
                   <td>{{ loop.index }}</td>
                   <td>{{ expense.item }}</td>
-                  <td>{{ expense.price }}</td>
+                  <td>₹ {{ expense.price }}</td>
                   <td>{{ expense.purchased_by }}</td>
                   <td>{{ expense.purchasing_date.split('T')[0]}}</td>  <!-- Formatted date -->
                   <td>{{ expense.entry_date.split('T')[0] }}</td>  <!-- Formatted date and time -->
