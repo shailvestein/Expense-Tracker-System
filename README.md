@@ -79,3 +79,9 @@ For any questions or feedback, reach out to:
 
 ## Features added in version-1.1:
  * Filters on view page added
+
+## Features added in version-2.0:
+ * Forgot password
+ * Dynamic timer during password reset and on page refresh detection redirect to generate otp (valid for 1 min) again page
+ * Expenses added by shows by first_name instead of phone number as earlier it was shown
+ * generated otp along with phone, first_name is stored on session
