@@ -77,3 +77,5 @@ For any questions or feedback, reach out to:
   * Email: shailvestein.careers@gmail.com
   * GitHub: shailvestein
 
+### Feature added:
+ * Filters on view page added
