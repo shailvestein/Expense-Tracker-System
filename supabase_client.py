@@ -22,7 +22,7 @@ try:
   if len(response.data) == 0:
     response = supabase.table('users').insert(admin).execute()
     print(f"Admin added to database.")
-  response = supabase.table('users').select('*').limit(1).execute()
-  print(f"Connection successfull!\nResponse: {response}")
+  # response = supabase.table('users').select('*').limit(1).execute()
+  # print(f"Connection successfull!\nResponse: {response}")
 except Exception as e:
   print(f'Connection failed.\nerror {e} occurred!')

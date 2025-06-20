@@ -92,13 +92,15 @@
           <th>From Date</th>
           <th>To Date</th>
           <th>Payment Done?</th>
+          <th>View expenses</th>
         </tr>
       </thead>
       <tbody>
+        {% set total_length = calculations_history|length + 1 %}
         {% for calculation_history in calculations_history %}
         {% set history_id = calculation_history['id'] %}
         <tr>
-          <td>{{ history_id }}</td>
+          <td>{{ total_length - loop.index }}</td>
           <td>{{ calculation_history['made_by'] }}</td>
           <td>₹ {{ calculation_history['total'] }}</td>
           <td>₹ {{ calculation_history['brijesh_spent'] }}</td>
@@ -121,6 +123,13 @@
                 </div>
               </form>
             {% endif %}
+          </td>
+          <td>
+            <form action="{{ url_for('view_expenses_history', history_id=history_id) }}" method="post">
+              <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
+                View
+              </button>
+            </form>
           </td>
         </tr>
         {% endfor %}

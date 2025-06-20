@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <title>Reset password</title>
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash Messages -->
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} text-center shadow-sm rounded" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center rounded-top">
+          <h3 class="mb-0">Verify OTP</h3>
+        </div>
+        <form method="post">
+          <div class="card text-center shadow-lg border-0 p-4">
+            <p class="mb-4">Enter OTP recieved on your registred email</p>
+            <input type="text" class="form-control mb-3" id="requested_otp" name="requested_otp" minlength="6" maxlength="6" required>
+            <div class="d-flex justify-content-center h-auto">
+              <p><button class="btn btn-primary" id="validate_otp_btn" type="submit">Validate OTP</button></p>
+              <p><a href="{{ url_for('login') }}" id="cancel_btn" class="text-decoration-none btn btn-danger">Cancel</a></p>
+            </div>
+            <div id="timer" class="text-danger fw-bold mb-3"></div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- Detect Page Refresh ---
+  let navType = "unknown";
+
+  if (performance.getEntriesByType("navigation").length > 0) {
+    navType = performance.getEntriesByType("navigation")[0].type;
+  } else if (performance.navigation && performance.navigation.type === 1) {
+    navType = "reload";
+  }
+
+  if (navType === "reload") {
+    // Redirect on refresh
+    window.location.href = "{{ url_for('generate_otp') }}";
+  }
+
+  // --- OTP Countdown Timer ---
+  let timeLeft = 60;  // 60 seconds
+  const timerDisplay = document.getElementById("timer");
+
+  const countdown = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      timerDisplay.innerHTML = "⛔ OTP expired. Please request again.";
+
+      const validateBtn = document.getElementById("validate_otp_btn");
+      const cancelBtn = document.getElementById("cancel_btn");
+
+      if (validateBtn) validateBtn.disabled = true;
+      if (cancelBtn) {
+        cancelBtn.innerText = "Request OTP Again";
+        cancelBtn.href = "{{ url_for('generate_otp') }}";  // or url_for('generate_otp') if you renamed it
+      }
+
+    } else {
+      timerDisplay.innerHTML = `⏳ OTP valid for: ${timeLeft} seconds`;
+      timeLeft--;
+    }
+  }, 1000);
+</script>
+
+
+
+{% endblock %}

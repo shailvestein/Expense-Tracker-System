@@ -4,7 +4,7 @@ from supabase_client import supabase
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+# load_dotenv()
 
 class SendMail:
   def __init__(self, app):
@@ -52,7 +52,3 @@ class LoadEmailIds:
 
   def get_all_recipients(self):
     return self.recipients
-
-
-# print(LoadEmailIds().get_all_recipients())
-

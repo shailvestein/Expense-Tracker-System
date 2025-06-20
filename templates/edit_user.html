@@ -93,6 +93,16 @@
               <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}" required>
             </div>
 
+            <div class="mb-3">
+              <label for="password" class="form-label">🔒 Enter New Password</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Leave blank to keep current password">
+            </div>
+
+            <div class="mb-3">
+              <label for="confirm_password" class="form-label">🔒 Re-enter New Password</label>
+              <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Leave blank to keep current password">
+            </div>
+
             <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
               <button type="submit" class="btn btn-success">✅ Update</button>
               <a href="{{ url_for('view_users') }}" class="btn btn-outline-secondary">↩ Cancel</a>
@@ -104,4 +114,10 @@
     </div>
   </div>
 </div>
+
+
 {% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/edit_user.js') }}"></script>
+{% endblock % }
