@@ -69,20 +69,11 @@ Expense-Tracker-System/
 └── README.md # Project documentation
 ```
 
----
-
-
----
-
-## Usage
-1. Use the dashboard to view all your expenses.
-2. Add new expenses by clicking the "Add Expense" button.
-3. Edit or delete any existing expense.
-
 
 ## Contact
+```
 For any questions or feedback, reach out to:
   * Author: Shailesh Kumar Vishwakarma
   * Email: shailvestein.careers@gmail.com
   * GitHub: shailvestein
-
+```
