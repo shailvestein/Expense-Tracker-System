@@ -14,10 +14,18 @@
 
 ---
 
+## Flow Chart
+
+Here’s the user flow of the application:
+
+![Flowchart](docs/flowchart.svg)
+
+---
+
 ## High-Level System Design
 
 This diagram shows the overall architecture of the Expense Tracker System, including
-frontend, backend, database, and email notification flows.
+frontend, backend, database, and email notification flows:
 
 ![High-Level System Design](docs/system-design.svg)
 
