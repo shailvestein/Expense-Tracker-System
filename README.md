@@ -2,16 +2,17 @@
 
 #### A simple and efficient Expense Tracker web application built using Python and Flask. This system allows users to track their daily expenses, categorize them, and view summaries for better financial management.
 #### Designed and implemented a secure admin dashboard enabling real-time content updates.
+
 ---
 
 ## Features
-
+```
 - Add, edit, and delete expenses
 - Categorize expenses (e.g., Food, Transport, Utilities)
 - View expense history with filters by date and category
 - Dashboard summary with total expenses
 - User-friendly and clean interface
-
+```
 ---
 
 ## Flow Chart
@@ -28,15 +29,16 @@ This diagram shows the overall architecture of the Expense Tracker System, inclu
 frontend, backend, database, and email notification flows:
 
 ![High-Level System Design](docs/system-design.svg)
-
 ---
 
 ## 🧰 Tech Stack
-
+```
 - **Frontend:** HTML5, CSS3, Bootstrap 5
 - **Backend:** Python, Flask
 - **Database:** Supabase (PostgreSQL)
 - **Deployment:** Render
+```
+---
 
 ## 📁 Project Structure
 
@@ -68,7 +70,7 @@ Expense-Tracker-System/
 │ └── js/ # JavaScript files
 └── README.md # Project documentation
 ```
-
+---
 
 ## Contact
 ```
