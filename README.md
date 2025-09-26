@@ -31,20 +31,12 @@ frontend, backend, database, and email notification flows:
 
 ---
 
-## Tech Stack
-
----
 ## 🧰 Tech Stack
 
 - **Frontend:** HTML5, CSS3, Bootstrap 5
 - **Backend:** Python, Flask
 - **Database:** Supabase (PostgreSQL)
 - **Deployment:** Render
-
-
-## Project Structure
-
-
 
 ## 📁 Project Structure
 
