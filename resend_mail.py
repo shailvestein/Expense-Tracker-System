@@ -1,5 +1,6 @@
 import os
 import resend
+from supabase_client import supabase
 
 class ResendMail:
     def __init__(self):
@@ -29,3 +30,12 @@ class ResendMail:
             return response
         except Exception as e:
             return str(e)
+
+class LoadEmailIds:
+  def __init__(self):
+    response = supabase.table('users').select('*').execute()
+    if response.data:
+      self.recipients = [user['email'] for user in response.data]
+
+  def get_all_recipients(self):
+    return self.recipients
