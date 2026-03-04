@@ -2,7 +2,10 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import datetime as dt
+
 from send_mail import SendMail, LoadEmailIds
+from resend_mail import ResendMail
+
 from supabase_client import supabase
 import os
 from dotenv import load_dotenv
@@ -16,8 +19,17 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
 
-# # Initialize SendMail client
-send_mail = SendMail(app=app)
+# # Initialize ResendMail client
+send_mail = ResendMail()
+@app.route("/test-email")
+def test_email():
+    result = mailer.send_text_email(
+        subject="Test from Resend",
+        recipients=["your_personal_email@gmail.com"],
+        body="यह Resend से भेजा गया test email है।"
+    )
+
+    return str(result)
 
 @app.route('/')
 @app.route('/home')
@@ -694,4 +706,5 @@ def view_expenses_history(history_id):
 
 
 if __name__ == '__main__':
+
   app.run(debug=True)
