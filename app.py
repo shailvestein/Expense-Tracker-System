@@ -20,7 +20,7 @@ app.secret_key = os.getenv('SECRET_KEY')
 
 
 # # Initialize ResendMail client
-send_mail = ResendMail()
+mailer = ResendMail()
 @app.route("/test-email")
 def test_email():
     if 'username' in session and session['role'] == 'admin':
@@ -709,4 +709,5 @@ def view_expenses_history(history_id):
 if __name__ == '__main__':
 
   app.run(debug=True)
+
 
