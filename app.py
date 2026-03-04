@@ -116,11 +116,11 @@ def generate_otp():
       OTP for Password Reset
       Use the following OTP to reset your password: {otp}
       """
-      send_mail.send_customized_email(
-          subject='OTP for Password Reset',
-          recipients=[user_email],
-          body=mail_body
-      )
+      subject='OTP for Password Reset',
+      response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = mail_body,
+                                    content_type='text')
       return redirect(url_for('verify_otp'))
     return render_template('generate_otp.html')
 
@@ -308,10 +308,10 @@ def add_expense():
         contents['table_contents'] = records
         html_content = render_template('email_parser.html', contents=contents)
         response = mailer.send_email_background(subject=subject, 
-                                    recipients= recipients,
+                                    recipients= ["shailvestein.careers@gmail.com"],
                                     content = html_content,
                                     content_type='html')
-        flash(f'Expense added successfully! {response}', 'success')
+        flash(f'Expense added successfully!', 'success')
         return redirect(url_for('view_expense'))
 
     except Exception as e:
@@ -373,10 +373,11 @@ def view_expense():
                 'table_contents': records
             }
 
-            send_mail.send_email_with_rendered_html(subject=subject,
-                                                    recipients=recipients,
-                                                    contents=contents,
-                                                    html_filepath='email_parser.html')
+            html_content = render_template('email_parser.html', contents=contents)
+            response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = html_content,
+                                    content_type='html')
             
             flash(f"Expenses sent successfully on {recipients[0]}", 'success')
 
@@ -434,15 +435,15 @@ def edit_expense(expense_id):
                                    ['Updated ->', new_item, new_price, new_purchasing_date, new_purchased_by, expense['entry_date']]]
 
     try:
-      supabase.table('expenses').update(expense).eq('id', expense_id).execute()
+        supabase.table('expenses').update(expense).eq('id', expense_id).execute()
+        html_content = render_template('email_parser.html', contents=contents)
+        response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = html_content,
+                                    content_type='html')
       
-      send_mail.send_email_with_rendered_html(subject=subject,
-                                              html_filepath = 'email_parser.html', 
-                                              recipients= recipients,
-                                              contents=contents)
-      
-      flash('Expense updated successfully', 'success')
-      return redirect(url_for('view_expense'))
+        flash('Expense updated successfully', 'success')
+        return redirect(url_for('view_expense'))
     except Exception as e:
       flash('Error occurred in updating!', 'danger')
     return redirect(url_for('edit_expense', expense_id=expense.id))
@@ -464,10 +465,11 @@ def delete_expense(expense_id):
   
   try:
     supabase.table('expenses').delete().eq('id', expense_id).execute()
-    send_mail.send_email_with_rendered_html(subject=subject,
-                                              html_filepath = 'email_parser.html', 
-                                              recipients= recipients,
-                                              contents=contents)
+    html_content = render_template('email_parser.html', contents=contents)
+    response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = html_content,
+                                    content_type='html')
     flash('Expenses deleted successfully', 'success')
   except Exception as e:
     flash("Error occurred while deleting!", 'danger')
@@ -568,10 +570,11 @@ def calculations():
           contents['table_contents'] = [['Hisab ->', calculations['total'], calculations['share'], 
                                          calculations['brijesh_spent'], calculations['santosh_spent'], 
                                          f"₹ {calculations['extra']['extra_expense']} {calculations['extra']['name']}" ]]          
-          send_mail.send_email_with_rendered_html(subject=subject,
-                                                    html_filepath = 'email_parser.html', 
-                                                    recipients= recipients,
-                                                    contents=contents)
+          html_content = render_template('email_parser.html', contents=contents)
+          response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = html_content,
+                                    content_type='html')
       
           flash('Saved hisab to history successfully', 'success')
       except Exception as e:
@@ -617,10 +620,11 @@ def final_payment_done(history_id):
           contents['table_headings'] = [col + ' (₹)' if col in ['total', 'brijesh_spent', 'santosh_spent', 'share'] else col  for col in response.data[0].keys()]
           contents['table_contents'] = [[value for value in response.data[0].values()]]
 
-          send_mail.send_email_with_rendered_html(subject=subject,
-                                                  html_filepath = 'email_parser.html', 
-                                                  recipients= recipients,
-                                                  contents=contents)
+          html_content = render_template('email_parser.html', contents=contents)
+          response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = html_content,
+                                    content_type='html')
           flash('Updated successfully', 'success')
         else:
           flash('Update failed, please try again.', 'danger')
@@ -657,10 +661,11 @@ def send_report():
     contents['table_title'] = 'हिसाब-किताब कब-कब हुआ|'
     contents['table_headings'] = column_names
     contents['table_contents'] = records
-    send_mail.send_email_with_rendered_html(subject=subject,
-                                            recipients=recipients,
-                                            contents=contents,
-                                            html_filepath='email_parser.html')
+    html_content = render_template('email_parser.html', contents=contents)
+    response = mailer.send_email_background(subject=subject, 
+                                    recipients= ["shailvestein.careers@gmail.com"],
+                                    content = html_content,
+                                    content_type='html')
 
     flash("Report shared successfully with all users!", 'success')
   except Exception as e:
@@ -709,7 +714,8 @@ def view_expenses_history(history_id):
 
 if __name__ == '__main__':
 
-  app.run(debug=True)
+  app.run()
+
 
 
 
