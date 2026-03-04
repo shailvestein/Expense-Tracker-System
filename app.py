@@ -309,7 +309,7 @@ def add_expense():
         html_content = render_template('email_parser.html', contents=contents)
         response = mailer.send_email_background(subject=subject, 
                                     recipients= recipients,
-                                    html_content = html_content,
+                                    content = html_content,
                                     content_type='html')
         flash(f'Expense added successfully! {response}', 'success')
         return redirect(url_for('view_expense'))
@@ -710,6 +710,7 @@ def view_expenses_history(history_id):
 if __name__ == '__main__':
 
   app.run(debug=True)
+
 
 
 
