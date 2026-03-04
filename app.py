@@ -310,7 +310,7 @@ def add_expense():
         result = mailer.send_html_email(subject=subject,
                                 html_content = html_content, 
                                 recipients= recipients)
-        flash('Expense added successfully', 'success')
+        flash(f'Expense added successfully! {result}', 'success')
         return redirect(url_for('view_expense'))
 
     except Exception as e:
@@ -709,6 +709,7 @@ def view_expenses_history(history_id):
 if __name__ == '__main__':
 
   app.run(debug=True)
+
 
 
 
