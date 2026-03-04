@@ -13,7 +13,7 @@
         <table style="min-width: 700px; border-collapse: collapse; border: 1px solid #ccc;">
           <thead>
             <tr>
-              {% for heading in contents.table_headings[-1:] %}
+              {% for heading in contents.table_headings %}
               <th style="padding: 8px; border: 1px solid #ccc; background-color: #eee; text-align: left;">
                 {{ heading }}
               </th>
@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for row in contents.table_contents %}
+            {% for row in contents.table_contents[::-1] %}
             <tr>
               {% for cell in row %}
               <td style="padding: 8px; border: 1px solid #ccc;">{{ cell }}</td>
@@ -41,5 +41,6 @@
     </div>
   </body>
 </html>
+
 
 
