@@ -307,9 +307,10 @@ def add_expense():
         contents['table_headings'] = column_names
         contents['table_contents'] = records
         html_content = render_template('email_parser.html', contents=contents)
-        result = mailer.send_html_email(subject=subject,
-                                html_content = html_content, 
-                                recipients= recipients)
+        for recipient in recipients:
+            result = mailer.send_html_email(subject=subject,
+                                    html_content = html_content, 
+                                    recipients= [recipient])
         flash(f'Expense added successfully! {result}', 'success')
         return redirect(url_for('view_expense'))
 
@@ -709,6 +710,7 @@ def view_expenses_history(history_id):
 if __name__ == '__main__':
 
   app.run(debug=True)
+
 
 
 
