@@ -1,35 +1,43 @@
 import os
 import resend
 from supabase_client import supabase
+from threading import Thread
+from dotenv import load_dotenv
+import time
+
+load_dotenv()
 
 class ResendMail:
     def __init__(self):
         resend.api_key = os.getenv("RESEND_API_KEY")
         self.sender = os.getenv("RESEND_SENDER")
 
-    def send_text_email(self, subject, recipients, body):
+    # send function
+    def _send(self, subject, recipients, content, content_type='text'):
         try:
-            response = resend.Emails.send({
-                "from": self.sender,
-                "to": recipients,
-                "subject": subject,
-                "text": body
-            })
-            return response
+            for recipient in recipients:
+                email_data = {
+                    "from": self.sender,
+                    "to": [recipient],
+                    "subject": subject
+                }
+                if content_type=='html':
+                    email_data['html'] = content
+                else:
+                    email_data['text'] = content
+                    
+                response = resend.Emails.send(email_data)
+                time.sleep(5) # 5 seconds delay
         except Exception as e:
-            return str(e)
+            return f"Email Error: {str(e)}"
 
-    def send_html_email(self, subject, recipients, html_content):
-        try:
-            response = resend.Emails.send({
-                "from": self.sender,
-                "to": recipients,
-                "subject": subject,
-                "html": html_content
-            })
-            return response
-        except Exception as e:
-            return str(e)
+    # Background wrapper function
+    def send_email_background(self, subject, recipients, content, content_type='text'):
+        thread = Thread(
+            target=self._send,
+            args=(subject, recipients, content, content_type)
+        )
+        thread.start()
 
 class LoadEmailIds:
   def __init__(self):
