@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
 
-send_mail = SendMail(app=app)
+# send_mail = SendMail(app=app)
 
 
 @app.route('/')
@@ -202,10 +202,10 @@ def add_expense():
         contents['table_title'] = 'All expenses after New added expense'
         contents['table_headings'] = column_names
         contents['table_contents'] = records
-        send_mail.send_email_with_rendered_html(subject=subject,
-                                                html_filepath = 'email_parser.html', 
-                                                recipients= recipients,
-                                                contents=contents)
+        # send_mail.send_email_with_rendered_html(subject=subject,
+                                                # html_filepath = 'email_parser.html', 
+                                                # recipients= recipients,
+                                                # contents=contents)
         flash('Expense added successfully', 'success')
         return redirect(url_for('view_expense'))
 
@@ -268,11 +268,11 @@ def view_expense():
                 'table_contents': records
             }
 
-            send_mail.send_email_with_rendered_html(subject=subject,
-                                                    recipients=recipients,
-                                                    contents=contents,
-                                                    html_filepath='email_parser.html')
-            flash(f"Expenses sent successfully on {recipients[0]}", 'success')
+            # send_mail.send_email_with_rendered_html(subject=subject,
+            #                                         recipients=recipients,
+            #                                         contents=contents,
+            #                                         html_filepath='email_parser.html')
+            # flash(f"Expenses sent successfully on {recipients[0]}", 'success')
 
         except Exception as e:
             flash(f"Some error {e} occurred!", 'danger')
@@ -331,10 +331,10 @@ def edit_expense(expense_id):
     try:
       supabase.table('expenses').update(expense).eq('id', expense_id).execute()
       
-      send_mail.send_email_with_rendered_html(subject=subject,
-                                              html_filepath = 'email_parser.html', 
-                                              recipients= recipients,
-                                              contents=contents)
+      # send_mail.send_email_with_rendered_html(subject=subject,
+      #                                         html_filepath = 'email_parser.html', 
+      #                                         recipients= recipients,
+      #                                         contents=contents)
       flash('Expense updated successfully', 'success')
       return redirect(url_for('view_expense'))
     except Exception as e:
@@ -358,10 +358,10 @@ def delete_expense(expense_id):
   
   try:
     supabase.table('expenses').delete().eq('id', expense_id).execute()
-    send_mail.send_email_with_rendered_html(subject=subject,
-                                              html_filepath = 'email_parser.html', 
-                                              recipients= recipients,
-                                              contents=contents)
+    # send_mail.send_email_with_rendered_html(subject=subject,
+    #                                           html_filepath = 'email_parser.html', 
+    #                                           recipients= recipients,
+    #                                           contents=contents)
     flash('Expenses deleted successfully', 'success')
   except Exception as e:
     flash("Error occurred while deleting!", 'danger')
@@ -462,10 +462,10 @@ def calculations():
           contents['table_contents'] = [['Hisab ->', calculations['total'], calculations['share'], 
                                          calculations['brijesh_spent'], calculations['santosh_spent'], 
                                          f"₹ {calculations['extra']['extra_expense']} {calculations['extra']['name']}" ]]          
-          send_mail.send_email_with_rendered_html(subject=subject,
-                                                    html_filepath = 'email_parser.html', 
-                                                    recipients= recipients,
-                                                    contents=contents)
+          # send_mail.send_email_with_rendered_html(subject=subject,
+          #                                           html_filepath = 'email_parser.html', 
+          #                                           recipients= recipients,
+          #                                           contents=contents)
       
           flash('Saved hisab to history successfully', 'success')
       except Exception as e:
@@ -511,10 +511,10 @@ def final_payment_done(history_id):
           contents['table_headings'] = [col + ' (₹)' if col in ['total', 'brijesh_spent', 'santosh_spent', 'share'] else col  for col in response.data[0].keys()]
           contents['table_contents'] = [[value for value in response.data[0].values()]]
 
-          send_mail.send_email_with_rendered_html(subject=subject,
-                                                  html_filepath = 'email_parser.html', 
-                                                  recipients= recipients,
-                                                  contents=contents)
+          # send_mail.send_email_with_rendered_html(subject=subject,
+          #                                         html_filepath = 'email_parser.html', 
+          #                                         recipients= recipients,
+          #                                         contents=contents)
           flash('Updated successfully', 'success')
         else:
           flash('Update failed, please try again.', 'danger')
@@ -545,18 +545,18 @@ def send_report():
 
     # Sending email report of hisab-kitab    #
     # Loading email ids from database #
-    recipients  = LoadEmailIds().get_all_recipients()
-    subject = f"हिसाब-किताब Report shared by {session['username']}"
-    contents = dict()
-    contents['table_title'] = 'हिसाब-किताब कब-कब हुआ|'
-    contents['table_headings'] = column_names
-    contents['table_contents'] = records
-    send_mail.send_email_with_rendered_html(subject=subject,
-                                            recipients=recipients,
-                                            contents=contents,
-                                            html_filepath='email_parser.html')
+    # recipients  = LoadEmailIds().get_all_recipients()
+    # subject = f"हिसाब-किताब Report shared by {session['username']}"
+    # contents = dict()
+    # contents['table_title'] = 'हिसाब-किताब कब-कब हुआ|'
+    # contents['table_headings'] = column_names
+    # contents['table_contents'] = records
+    # send_mail.send_email_with_rendered_html(subject=subject,
+    #                                         recipients=recipients,
+    #                                         contents=contents,
+    #                                         html_filepath='email_parser.html')
 
-    flash("Report shared successfully with all users!", 'success')
+    # flash("Report shared successfully with all users!", 'success')
   except Exception as e:
     flash(f"Some error {e} occurred!", 'danger')
   return redirect(url_for('admin_dashboard'))
@@ -602,4 +602,5 @@ def view_expenses_history(history_id):
 
 
 if __name__ == '__main__':
+
   app.run(debug=True)
