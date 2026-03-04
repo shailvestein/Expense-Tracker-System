@@ -26,7 +26,7 @@ def test_email():
     if 'username' in session and session['role'] == 'admin':
         result = mailer.send_text_email(
             subject="Test from Resend",
-            recipients=["your_personal_email@gmail.com"],
+            recipients=["shailvestein.careers@gmail.com"],
             body="यह Resend से भेजा गया test email है।"
         )
 
@@ -709,5 +709,6 @@ def view_expenses_history(history_id):
 if __name__ == '__main__':
 
   app.run(debug=True)
+
 
 
